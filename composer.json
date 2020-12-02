@@ -1,7 +1,18 @@
 {
     "name": "batkor/leroy_merlin",
+    "type": "library",
+    "description": "The PSR-7 http client for Leroy Merlin store.",
+    "keywords": ["Leroy Merlin", "psr-7"],
+    "authors": [
+        {
+            "name": "batkor",
+            "email": "info@batkor.ru",
+            "homepage": "https://github.com/batkor"
+        }
+    ],
     "require": {
-        "guzzlehttp/guzzle": "^6.5",
+        "ext-json": "*",
+        "guzzlehttp/psr7": "^1.6",
         "php-http/message": "^1.10"
     }
 }
