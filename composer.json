@@ -1,0 +1,7 @@
+{
+    "name": "batkor/leroy_merlin",
+    "require": {
+        "guzzlehttp/guzzle": "^6.5",
+        "php-http/message": "^1.10"
+    }
+}
