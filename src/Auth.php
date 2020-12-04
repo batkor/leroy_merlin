@@ -42,13 +42,6 @@ final class Auth extends RequestBase implements Authentication {
   private $apiKey;
 
   /**
-   * The refresh token.
-   *
-   * @var string
-   */
-  private $refreshToken;
-
-  /**
    * The authorization string.
    *
    * @var string
