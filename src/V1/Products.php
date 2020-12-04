@@ -2,15 +2,13 @@
 
 namespace LeroyMerlin\V1;
 
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Stream;
 use LeroyMerlin\Auth;
-use LeroyMerlin\BaseManager;
+use LeroyMerlin\RequestBase;
 use LeroyMerlin\Exception\LeroyMerlinException;
 use Psr\Http\Message\StreamInterface;
 use function GuzzleHttp\Psr7\stream_for;
 
-final class Products extends BaseManager {
+final class Products extends RequestBase {
 
   /**
    * The URI for get assortments list.
@@ -28,7 +26,7 @@ final class Products extends BaseManager {
   public const URI_PRICE = 'https://api.leroymerlin.ru/marketplace/api/v1/products/price';
 
   /**
-   * @var \LeroyMerlin\AuthOld
+   * @var \LeroyMerlin\Auth
    */
   private $auth;
 
@@ -56,8 +54,9 @@ final class Products extends BaseManager {
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function assortment(): array {
-    $request = new Request('GET', self::URI_ASSORTMENT, ['Content-Type' => 'application/json']);
-    $request = $this->auth->authenticate($request);
+    $request = $this
+      ->auth
+      ->authenticate($this->getRequest('GET', self::URI_ASSORTMENT));
     $response = $this->getClient()->sendRequest($request);
     $data = $response->getBody()->getContents();
     $decodeData = json_decode($data, TRUE);
@@ -74,7 +73,6 @@ final class Products extends BaseManager {
    */
   public function updateStoke(array $products): void {
     $this->updateRequest(self::URI_STOCK, stream_for(json_encode($this->prepareBody($products))));
-
   }
 
   /**
@@ -102,9 +100,8 @@ final class Products extends BaseManager {
    * @throws \Psr\Http\Client\ClientExceptionInterface
    */
   private function updateRequest(string $uri, StreamInterface $stream): void {
-    $request = new Request('POST', $uri, ['Content-Type' => 'application/json']);
     $request = $this->auth
-      ->authenticate($request)
+      ->authenticate($this->getRequest('POST', $uri))
       ->withBody($stream);
     $response = $this->getClient()->sendRequest($request);
     $data = $response->getBody()->getContents();

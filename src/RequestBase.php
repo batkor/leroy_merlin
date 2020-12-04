@@ -2,15 +2,17 @@
 
 namespace LeroyMerlin;
 
+use GuzzleHttp\Psr7\Request;
 use Http\Adapter\Guzzle6\Client;
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestInterface;
 
 /**
- * The base manager.
+ * The base request.
  *
  * @package LeroyMerlin
  */
-abstract class BaseManager {
+abstract class RequestBase {
 
   /**
    * The http client.
@@ -20,16 +22,18 @@ abstract class BaseManager {
   private $client;
 
   /**
-   * Set http client.
+   * Returns request instance..
    *
-   * @param \Psr\Http\Client\ClientInterface $client
-   *   The http client.
+   * @param string $method
+   *   The request method.
+   * @param string $uri
+   *   The request uri.
    *
-   * @return $this
+   * @return \Psr\Http\Message\RequestInterface
+   *   The request instance.
    */
-  public function setClient(ClientInterface $client): self {
-    $this->client = $client;
-    return $this;
+  protected function getRequest(string $method, string $uri): RequestInterface {
+    return new Request($method, $uri, ['Content-Type' => 'application/json']);
   }
 
   /**

@@ -2,16 +2,13 @@
 
 namespace LeroyMerlin;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Request;
 use Http\Message\Authentication;
 use LeroyMerlin\Cache\CacheInterface;
 use LeroyMerlin\Cache\FileSystemCache;
-use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class Auth extends BaseManager implements Authentication {
+final class Auth extends RequestBase implements Authentication {
 
   /**
    * The URI for authorization.
@@ -166,7 +163,7 @@ class Auth extends BaseManager implements Authentication {
           'password' => $this->password,
         ]);
     }
-    $request = new Request('GET', $uri);
+    $request = $this->getRequest('GET', $uri);
     $request = $request
       ->withHeader('apikey', $this->apiKey)
       ->withHeader('Accept', 'application/json')
